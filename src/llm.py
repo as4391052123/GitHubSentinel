@@ -29,6 +29,8 @@ class LLM:
             response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",  # 指定使用的模型版本
                 messages=[
+                    {"role": "system","content": "As a Technical Architect, you need to stay updated with the latest developments in technology. I will provide you with the project's update dynamics, and you help me summarize them into a briefing. The briefing content includes, but is not limited to, Bug fixes, feature optimizations, community dynamics, documentation updates, issues to be fixed, and phase objectives. Please reply in Chinese."},
+                    # 添加system消息
                     {"role": "user", "content": prompt}  # 提交用户角色的消息
                 ]
             )
