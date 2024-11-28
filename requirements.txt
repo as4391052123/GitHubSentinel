@@ -3,3 +3,4 @@ openai
 gradio
 loguru
 python-daemon
+urllib3
