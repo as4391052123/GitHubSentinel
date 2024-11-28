@@ -9,7 +9,7 @@ class Config:
         # 从环境变量获取GitHub Token
         self.github_token = os.getenv('GITHUB_TOKEN')
         
-        with open('config.json', 'r') as f:
+        with open('./../config.json', 'r') as f:
             config = json.load(f)
             
             # 如果环境变量中没有GitHub Token，则从配置文件中读取
