@@ -1,4 +1,6 @@
 
+# src/llm.py
+
 import os
 import json
 import requests
@@ -92,14 +94,18 @@ class LLM:
 
         # 从TXT文件加载提示信息
         with open("./../prompts/report_prompt.txt", "r", encoding='utf-8') as file:
-            self.system_prompt = file.read()
+            self.default_prompt = file.read()
 
         # 配置日志文件，当文件大小达到1MB时自动轮转，日志级别为DEBUG
         LOG.add("logs/llm_logs.log", rotation="1 MB", level="DEBUG")
 
-    def generate_daily_report(self, markdown_content: str, dry_run: bool = False) -> str:
+    def generate_daily_report(self, markdown_content: str, prompt: str = None, dry_run: bool = False) -> str:
+        # 如果传入的prompt为空，则使用默认提示词
+        if not prompt:
+            prompt = self.default_prompt
+
         messages = [
-            {"role": "system", "content": self.system_prompt},
+            {"role": "system", "content": prompt},
             {"role": "user", "content": markdown_content},
         ]
 

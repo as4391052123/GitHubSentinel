@@ -14,10 +14,12 @@ llm = LLM()
 report_generator = ReportGenerator(llm)
 subscription_manager = SubscriptionManager(config.subscriptions_file)
 
-def export_progress_by_date_range(repo, days):
+def export_progress_by_date_range(repo, days, prompt, proxy_url):
+    # 更新 LLM 实例的代理 URL
+    llm.proxy_url = proxy_url
     # 定义一个函数，用于导出和生成指定时间范围内项目的进展报告
     raw_file_path = github_client.export_progress_by_date_range(repo, days)  # 导出原始数据文件路径
-    report, report_file_path = report_generator.generate_report_by_date_range(raw_file_path, days)  # 生成并获取报告内容及文件路径
+    report, report_file_path = report_generator.generate_report_by_date_range(raw_file_path, days, prompt)  # 生成并获取报告内容及文件路径
 
     return report, report_file_path  # 返回报告内容和报告文件路径
 
@@ -30,6 +32,8 @@ demo = gr.Interface(
             subscription_manager.list_subscriptions(), label="订阅列表", info="已订阅GitHub项目"
         ),  # 下拉菜单选择订阅的GitHub项目
         gr.Slider(value=2, minimum=1, maximum=7, step=1, label="报告周期", info="生成项目过去一段时间进展，单位：天"),
+        gr.Textbox(label="提示词", placeholder="请输入生成报告时的提示词"),  # 文本输入框用于输入提示词
+        gr.Textbox(label="OpenAI 代理 URL", placeholder="请输入OpenAI代理URL"),  # 文本输入框用于输入OpenAI代理URL
         # 滑动条选择报告的时间范围
     ],
     outputs=[gr.Markdown(), gr.File(label="下载报告")],  # 输出格式：Markdown文本和文件下载
