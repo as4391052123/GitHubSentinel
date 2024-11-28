@@ -19,7 +19,8 @@ GitHub Sentinel 是一个开源的工具 AI 代理，专为开发人员和项目
 首先，安装所需的依赖项：
 
 ```sh
-pip install -r requirements.txt
+pip install -r requirements.txt  --index-url https://pypi.org/simple
+
 ```
 
 ### 2. 配置应用
@@ -33,7 +34,7 @@ pip install -r requirements.txt
         "email": "your_email@example.com",
         "slack_webhook_url": "your_slack_webhook_url"
     },
-    "subscriptions_file": "subscriptions.json",
+    "subscriptions_file": "./../subscriptions.json",
     "update_interval": 86400
 }
 ```
