@@ -47,7 +47,8 @@ def hacker_news_job(hacker_news_client, report_generator, notifier, date, hour):
     LOG.info("[开始执行定时任务]")
     markdown_file_path = hacker_news_client.export_top_stories()
     report, _ = report_generator.generate_hn_topic_report(markdown_file_path)
-    notifier.notify("hack news daily report", report)
+    if report:
+        notifier.notify("hack news daily report", report)
     LOG.info(f"[定时任务执行完毕]")
 
 
@@ -55,11 +56,9 @@ def main():
     # 设置信号处理器
     signal.signal(signal.SIGTERM, graceful_shutdown)
     # 定义任务类型，控制启动后任务开关
-    tasks = "github,hn"
+    tasks = "hn"
     config = Config()  # 创建配置实例
-    llm = None
     notifier = Notifier(config.email)  # 创建通知器实例
-    fetch_client = None
 
     if tasks.__contains__("github"):
         from github_client import GitHubClient  # 导入GitHub客户端类，处理GitHub API请求
@@ -76,8 +75,11 @@ def main():
 
     if tasks.__contains__("hn"):
         from hacker_news_client import HackerNewsClient
-        llm = LLM(model_type="yesapi",
-                  prompt_file_path="prompts/hacker_news_daily_report_openai_prompt.txt")  # 创建语言模型实例
+        # 修改大模型为ollama
+        # llm = LLM(model_type="yesapi",
+        #           prompt_file_path="prompts/hacker_news_daily_report_openai_prompt.txt")
+        llm = LLM(model_type="ollama",model_name="llama3.2",
+                  prompt_file_path="prompts/hacker_news_daily_report_ollama_prompt.txt")  # 创建语言模型实例
         report_generator = ReportGenerator(llm)  # 创建报告生成器实例
         hacker_news_client= HackerNewsClient()
         hacker_news_job(hacker_news_client, report_generator, notifier, config.freq_days, config.exec_time)

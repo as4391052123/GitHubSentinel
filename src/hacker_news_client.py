@@ -37,8 +37,8 @@ class HackerNewsClient:
     def export_top_stories(self, date=None, hour=None):
         """
         导出热点新闻到指定目录下的 Markdown 文件。
-        :param date: 日期，格式为2024-12-03 默认为None
-        :param hour: 时间
+        :param date: 日期，格式为yyyy-MM-dd 默认为None
+        :param hour: 小时
         """
         LOG.info("准备导出Hacker News的热门新闻。")
         top_stories = self.fetch_hackernews_top_stories()
