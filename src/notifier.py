@@ -30,6 +30,7 @@ class Notifier:
                 LOG.debug("登录SMTP服务器")
                 server.login(msg['From'], self.email_settings['password'])
                 server.sendmail(msg['From'], msg['To'], msg.as_string())
+                server.close()
                 LOG.info("邮件发送成功！")
         except Exception as e:
             LOG.error(f"发送邮件失败：{str(e)}")

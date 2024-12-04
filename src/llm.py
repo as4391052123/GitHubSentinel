@@ -8,7 +8,7 @@ class LLM:
         # 创建一个OpenAI客户端实例
         self.client = OpenAI()
         # 从TXT文件加载提示信息
-        with open("prompts/report_prompt.txt", "r", encoding='utf-8') as file:
+        with open("prompts/github_openai_report_prompt.txt", "r", encoding='utf-8') as file:
             self.system_prompt = file.read()
 
     def generate_daily_report(self, markdown_content, dry_run=False):

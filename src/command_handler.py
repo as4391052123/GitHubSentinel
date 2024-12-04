@@ -48,7 +48,7 @@ class CommandHandler:
         # 生成日报命令
         parser_generate = subparsers.add_parser('generate', help='Generate daily report from markdown file')
         parser_generate.add_argument('file', type=str, help='The markdown file to generate report from')
-        parser_generate.set_defaults(func=self.generate_daily_report)
+        parser_generate.set_defaults(func=self.generate_github_daily_report)
 
         # 帮助命令
         parser_help = subparsers.add_parser('help', help='Show help message')
@@ -79,8 +79,8 @@ class CommandHandler:
         self.github_client.export_progress_by_date_range(args.repo, days=args.days)
         print(f"Exported progress for the last {args.days} days for repository: {args.repo}")
 
-    def generate_daily_report(self, args):
-        self.report_generator.generate_daily_report(args.file)
+    def generate_github_daily_report(self, args):
+        self.report_generator.generate_github_daily_report(args.file)
         print(f"Generated daily report from file: {args.file}")
 
     def print_help(self, args=None):
